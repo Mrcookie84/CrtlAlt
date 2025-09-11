@@ -34,13 +34,13 @@ public class Note : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("HitZone"))
             canBePressed = true;
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("HitZone"))
             canBePressed = false;
