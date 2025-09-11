@@ -16,10 +16,14 @@ public class InnactivityManager : MonoBehaviour
         {
             UpdateTime();
         }
+        else
+        {
+            ResetTimer();
+        }
 
         if (innactivityTimer > 15)
         {
-            ResetGame();
+            RestartGame();
         }
     }
 
@@ -28,9 +32,15 @@ public class InnactivityManager : MonoBehaviour
         innactivityTimer += Time.deltaTime;
     }
 
-    private void ResetGame()
+    private void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        innactivityTimer = 0;
+        
+    }
+
+    private void ResetTimer()
+    {
         innactivityTimer = 0;
     }
 }
