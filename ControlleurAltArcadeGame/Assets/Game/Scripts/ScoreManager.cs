@@ -57,7 +57,7 @@ public class ScoreManager : MonoBehaviour
                 {
                     if (i == 0)
                     {
-                        to
+                        //
                     }
                     topScoresAndPlayers[i-1].text = topScoresAndPlayers[i].ToString();
                     topScoresAndPlayers[i].text = currentPlayer;
