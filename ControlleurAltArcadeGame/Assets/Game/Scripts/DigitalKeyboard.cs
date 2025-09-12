@@ -4,15 +4,17 @@ using TMPro;
 
 public class DigitalKeyboardController : MonoBehaviour
 {
-    [SerializeField] TMP_InputField inputField;
+    #region Parameters
+    [SerializeField] private TMP_InputField inputField;
     [SerializeField] private int characterCount = 15;
     [SerializeField] private GameObject Menucanvas;
     private int characterLimit;
     private int currentIndex = 0;
     
     public Button[] keys;      
-    public int keysPerRow = 10;  
-    
+    public int keysPerRow = 10; 
+    public ScoreManager scoreManagerscript;
+    #endregion
 
     void Start()
     {
@@ -77,27 +79,28 @@ public class DigitalKeyboardController : MonoBehaviour
             key = " ";
             inputField.text += key;
             characterCount--;
-            Debug.Log("Input: " + key + ". Limit:" + characterCount);
+            //Debug.Log("Input: " + key + ". Limit:" + characterCount);
         }
         else if (keys[currentIndex].tag == "SuprKey")
         {
             key = "";
             inputField.text = key;
             characterCount = characterLimit;
-            Debug.Log("Input: " + key + ". Limit:" + characterCount);
+            //Debug.Log("Input: " + key + ". Limit:" + characterCount);
         }
         else if (characterCount > 0)
         {
             key = keys[currentIndex].GetComponentInChildren<TMP_Text>().text;
             inputField.text += key;
             characterCount--;
-            Debug.Log("Input: " + key + ". Limit:" + characterCount);
+            //Debug.Log("Input: " + key + ". Limit:" + characterCount);
         }
     }
 
     public void StartGame()
-    {
+    { 
+        scoreManagerscript.AddScoreAndName(inputField.text, scoreManagerscript.playerScore);
         Menucanvas.SetActive(false);
-        Debug.Log(inputField.text);
+        //Debug.Log(inputField.text);
     }
 }
