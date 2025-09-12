@@ -4,9 +4,7 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - SpaceKey
-  - SuprKey
-  - StartKey
+  - HitZone
   layers:
   - Default
   - TransparentFX
