@@ -103,7 +103,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   lane: 0
+  scoreGived: 1
   canBePressed: 0
+  laneSprites:
+  - {fileID: -2413806693520163455, guid: 5ace3d718f50edc48a0e931a4d279b28, type: 3}
+  - {fileID: 7482667652216324306, guid: cf3ab19dbd1c8d540a56b2da5eb524cd, type: 3}
+  - {fileID: 7482667652216324306, guid: ef35bcc19c95253418d6062c668a2b73, type: 3}
+  - {fileID: -9095717837082945937, guid: e4ec829c6aa18e54f84065bbb85ffb1c, type: 3}
+  sr: {fileID: 7709119681505805804}
 --- !u!61 &2723308088698798802
 BoxCollider2D:
   m_ObjectHideFlags: 0

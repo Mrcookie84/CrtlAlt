@@ -7,6 +7,22 @@ public class HoldNote : Note
     private bool holding = false;
     private bool failed = false;
 
+    void Start()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        
+        if (laneSprites != null && laneSprites.Length > lane && lane >= 0)
+        {
+            sr.sprite = laneSprites[lane];
+        }
+        else
+        {
+            Debug.LogWarning($"Lane {lane} n'a pas de sprite assigné !");
+        }
+    }
+    
+    
+    
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
@@ -15,7 +31,7 @@ public class HoldNote : Note
         {
             holdTimer += Time.deltaTime;
             if (holdTimer >= duration)
-                Hit();
+                Hit(scoreGived);
         }
 
         if (transform.position.y < -6f && !failed)
@@ -28,6 +44,7 @@ public class HoldNote : Note
         {
             holding = true;
             holdTimer = 0f;
+            speed = 0f;
         }
     }
 
@@ -37,10 +54,10 @@ public class HoldNote : Note
             Miss();
     }
 
-    protected override void Hit()
+    protected override void Hit(int scoreUp)
     {
         if (failed) return;
-        FindObjectOfType<GameManager>().NoteHit();
+        FindObjectOfType<GameManager>().NoteHit(scoreUp);
         Destroy(gameObject);
     }
 
