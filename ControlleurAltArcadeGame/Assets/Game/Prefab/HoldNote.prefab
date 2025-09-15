@@ -251,7 +251,7 @@ MonoBehaviour:
   - {fileID: 7482667652216324306, guid: ef35bcc19c95253418d6062c668a2b73, type: 3}
   - {fileID: -9095717837082945937, guid: e4ec829c6aa18e54f84065bbb85ffb1c, type: 3}
   sr: {fileID: 5582395571481031268}
-  duration: 1
+  duration: 0.9
 --- !u!61 &4136676141801204633
 BoxCollider2D:
   m_ObjectHideFlags: 0
