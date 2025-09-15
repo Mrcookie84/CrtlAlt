@@ -39,10 +39,6 @@ public class InputManager : MonoBehaviour
             else
                 noteToHit.Pressed();
         }
-        else
-        {
-            Debug.Log($"[InputManager] Aucune note frappable trouvée dans Lane {lane}");
-        }
     }
 
     void ReleaseLane(int lane)

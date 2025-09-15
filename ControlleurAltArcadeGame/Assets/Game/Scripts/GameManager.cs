@@ -25,12 +25,13 @@ public class GameManager : MonoBehaviour
     [Header("Bonus Bar")] public Slider bonusBar;
     public float bonusDurationTime = 10;
     public int scoreToActivateBonus = 100;
-    private bool bonusActive;
+    private bool bonusActive = false;
 
     private void Start()
     {
         bonusBar.value = 0;
         bonusActive = false;
+        bonusBar.value = score;
         bonusPopUp.SetActive(false);
         UpdateUI();
         StartTheGame();
@@ -49,7 +50,7 @@ public class GameManager : MonoBehaviour
             
             if (Input.GetKeyDown(KeyCode.X))
             {
-                bonusBar.value = 0;
+                bonusBar.value -= scoreToActivateBonus;
                 bonusActive = true;
                 bonusPopUp.SetActive(false);
                 StartCoroutine(BonusCorout());
@@ -69,8 +70,7 @@ public class GameManager : MonoBehaviour
 
             if (!bonusActive && !Mathf.Approximately(bonusBar.value, bonusBar.maxValue))
             {
-                float increment = bonusBar.maxValue * 0.01f;
-                bonusBar.value = Mathf.Min(bonusBar.value + increment, bonusBar.maxValue);
+                bonusBar.value += scoreUp;
             }
         }
 
