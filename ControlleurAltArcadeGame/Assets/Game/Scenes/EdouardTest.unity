@@ -8238,22 +8238,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2830338be702e7745870aa9eff399c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2135720499}
-  scoreText: {fileID: 1889101704}
-  topScoresAndPlayers:
-  - {fileID: 472932562}
-  - {fileID: 1351483469}
+  playerGameObject: {fileID: 2135720499}
+  currentPlayerScoreText: {fileID: 1889101704}
+  topScoresAndPlayersTextList:
   - {fileID: 1437967424}
-  topScores:
-  - 28
-  - 31
-  - 34
-  topPlayers:
-  - ARNOLD
-  - LUFFY
-  - NICK
-  playerScore: 0
-  digitalKeyboardScript: {fileID: 1269140908}
+  - {fileID: 1351483469}
+  - {fileID: 472932562}
+  topPlayerNamesList:
+  - Gabriel
+  - Laura
+  - Mussolini
+  topPlayerScoresList:
+  - 56
+  - 49
+  - 42
 --- !u!1 &1889101702
 GameObject:
   m_ObjectHideFlags: 0

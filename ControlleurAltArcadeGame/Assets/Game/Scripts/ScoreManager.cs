@@ -1,20 +1,21 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField]private GameObject player;
-    [SerializeField]private TextMeshProUGUI scoreText;
-    [SerializeField]private TextMeshProUGUI[] topScoresAndPlayers;
-    [SerializeField]private float[] topScores;
-    [SerializeField]private string[] topPlayers;
-    private string currentPlayer;
-    
-    public float playerScore;
-    //public List<string> playerScoreList;  
-    public DigitalKeyboardController digitalKeyboardScript;
+    [SerializeField]private GameObject playerGameObject;
+    [SerializeField]private TextMeshProUGUI currentPlayerScoreText;
+    [SerializeField][Tooltip("Top 3 Names and Scores Text")]private TextMeshProUGUI[] topPlayersAndScoresTextList;
+    [SerializeField]private List<String> topPlayerNamesList = new List<String>();
+    //[SerializeField][Tooltip("Top 3 Player Names")]public string[] topPlayerNamesList;  
+    [SerializeField]private List<float> topPlayerScoresList = new List<float>();
+    //[SerializeField][Tooltip("Top 3 Player Scores")]private float[] topPlayerScoresList;
 
+    private string currentPlayerName = "TON NOM";
+    private float currentPlayerScore;
+    
     void Start()
     {
         DisplayScoreBoard();
@@ -24,46 +25,64 @@ public class ScoreManager : MonoBehaviour
         UpdateScore();
         DisplayScore();
     }
-
+ 
     public void UpdateScore()
     {
-        playerScore = player.transform.position.y;
+        currentPlayerScore = playerGameObject.transform.position.y;
     }
 
     public void DisplayScore()
     {
-        scoreText.text = playerScore.ToString();
+        currentPlayerScoreText.text = currentPlayerName + " : " + currentPlayerScore;
     }
-
-    #region TopScoresAndPlayers
-    
     private void DisplayScoreBoard()
     {
-        for (int i = 0; i < topScoresAndPlayers.Length; i++)
+        Debug.Log("Displaying Score Board");
+        
+        if (topPlayerNamesList.Count != 0 &&  topPlayerScoresList.Count != 0)
         {
-            topScoresAndPlayers[i].text = topScores[i] + ":" + topPlayers[i];
+            for (int i = 0; i < topPlayersAndScoresTextList.Length; i++)
+            {
+                topPlayersAndScoresTextList[i].text = topPlayerNamesList[i] + " : " + topPlayerScoresList[i].ToString("F0");
+            }
+        }
+        else
+        {
+            for (int i = 0; i < topPlayersAndScoresTextList.Length; i++)
+            {
+                topPlayerNamesList.Add("VIDE");
+                topPlayerScoresList.Add(0);
+                topPlayersAndScoresTextList[i].text = topPlayerNamesList[i] + " : " + topPlayerScoresList[i].ToString("F0");
+                Debug.Log(topPlayersAndScoresTextList[i].text);
+            }
         }
     }
-    public void AddScoreAndName(string _name, float _score)
+    public void AddPlayerName(string _name)
     {
-        currentPlayer = _name + ":" + _score;
+        currentPlayerName = _name;
     }
 
     public void EndGame()
     {
-        for (int i = 0; i < topScores.Length; i++)
+        
+        for (int i = 0; i < topPlayerScoresList.Count; i++)
         {
-            if (topScores[i] < playerScore)
+            if (currentPlayerScore > topPlayerScoresList[i])
+            {
+                for (int j = topPlayerScoresList.Count - 1; j > i; j--)
                 {
-                    if (i == 0)
-                    {
-                        to
-                    }
-                    topScoresAndPlayers[i-1].text = topScoresAndPlayers[i].ToString();
-                    topScoresAndPlayers[i].text = currentPlayer;
+                    topPlayerScoresList[j] = topPlayerScoresList[j - 1];
+                    topPlayerNamesList[j] = topPlayerNamesList[j - 1];
                 }
+
+                topPlayerScoresList[i] = currentPlayerScore;
+                topPlayerNamesList[i] = currentPlayerName;
+
+                break; 
+            }
         }
-        playerScore = 0;
+        DisplayScoreBoard();
+
+        currentPlayerScore = 0;
     }
-    #endregion
 }

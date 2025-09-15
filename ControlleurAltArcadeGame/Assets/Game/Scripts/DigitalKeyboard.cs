@@ -99,7 +99,7 @@ public class DigitalKeyboardController : MonoBehaviour
 
     public void StartGame()
     { 
-        scoreManagerscript.AddScoreAndName(inputField.text, scoreManagerscript.playerScore);
+        scoreManagerscript.AddPlayerName(inputField.text);
         Menucanvas.SetActive(false);
         //Debug.Log(inputField.text);
     }
