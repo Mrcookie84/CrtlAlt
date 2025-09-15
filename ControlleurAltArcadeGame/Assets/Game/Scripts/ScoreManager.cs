@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField]private GameObject playerGameObject;
     [SerializeField]private TextMeshProUGUI currentPlayerScoreText;
     [SerializeField][Tooltip("Top 3 Names and Scores Text")]private TextMeshProUGUI[] topPlayersAndScoresTextList;
-    [SerializeField]private List<String> topPlayerNamesList = new List<String>();
-    //[SerializeField][Tooltip("Top 3 Player Names")]public string[] topPlayerNamesList;  
-    [SerializeField]private List<float> topPlayerScoresList = new List<float>();
-    //[SerializeField][Tooltip("Top 3 Player Scores")]private float[] topPlayerScoresList;
+    [SerializeField]private List<String> topPlayerNamesList = new List<String>(3);
+    [SerializeField]private List<float> topPlayerScoresList = new List<float>(3);
 
     private string currentPlayerName = "TON NOM";
     private float currentPlayerScore;
@@ -19,6 +18,8 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         DisplayScoreBoard();
+        topPlayerNamesList.Capacity = 3;
+        topPlayerScoresList.Capacity = 3;
     }
     void Update()
     {
@@ -41,7 +42,7 @@ public class ScoreManager : MonoBehaviour
         
         if (topPlayerNamesList.Count != 0 &&  topPlayerScoresList.Count != 0)
         {
-            for (int i = 0; i < topPlayersAndScoresTextList.Length; i++)
+            for (int i = 0; i < topPlayerNamesList.Count; i++)
             {
                 topPlayersAndScoresTextList[i].text = topPlayerNamesList[i] + " : " + topPlayerScoresList[i].ToString("F0");
             }

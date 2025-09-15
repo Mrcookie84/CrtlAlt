@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 public class InnactivityManager : MonoBehaviour
 {
     [SerializeField]private float innactivityTimer;
-    private bool isPlaying = true;
+    [SerializeField]private float innactivityTimerMax;
+    [SerializeField]private bool isPlaying = true;
     void Start()
     {
         
@@ -21,7 +22,7 @@ public class InnactivityManager : MonoBehaviour
             ResetTimer();
         }
 
-        if (innactivityTimer > 15)
+        if (innactivityTimer > innactivityTimerMax)
         {
             RestartGame();
         }
@@ -34,7 +35,8 @@ public class InnactivityManager : MonoBehaviour
 
     private void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
         innactivityTimer = 0;
         
     }
