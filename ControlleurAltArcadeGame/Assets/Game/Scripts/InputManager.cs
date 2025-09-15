@@ -11,13 +11,11 @@ public class InputManager : MonoBehaviour
         {
             if (Input.GetKeyDown(keys[lane]))
             {
-                Debug.Log($"[InputManager] Touche pressée : {keys[lane]} (Lane {lane})");
                 PressLane(lane);
             }
 
             if (Input.GetKeyUp(keys[lane]))
             {
-                Debug.Log($"[InputManager] Touche relâchée : {keys[lane]} (Lane {lane})");
                 ReleaseLane(lane);
             }
         }
@@ -36,7 +34,6 @@ public class InputManager : MonoBehaviour
 
         if (noteToHit != null)
         {
-            Debug.Log($"[InputManager] Note détectée dans Lane {lane} → HIT !");
             if (noteToHit is HoldNote holdNote)
                 holdNote.StartHolding();
             else
@@ -50,13 +47,11 @@ public class InputManager : MonoBehaviour
 
     void ReleaseLane(int lane)
     {
-        // Si on relâche une touche, on avertit les hold notes en cours
         HoldNote[] holdNotes = FindObjectsOfType<HoldNote>();
         foreach (var hn in holdNotes)
         {
             if (hn.lane == lane)
             {
-                Debug.Log($"[InputManager] Relâche détecté sur une HoldNote Lane {lane} → Vérification maintien");
                 hn.StopHolding();
             }
         }

@@ -5,6 +5,9 @@ using System.Linq;
 
 public class NoteSpawner : MonoBehaviour
 {
+
+    [Header("Game Manager")] public GameManager GameManager;
+    
     [Header("Prefabs")]
     public GameObject tapNotePrefab;
     public GameObject holdNotePrefab;
@@ -19,24 +22,47 @@ public class NoteSpawner : MonoBehaviour
     public float holdNoteChance = 0.01f;      // % de chance qu'une hold note spawn (0.5 = 50%)
 
     private float currentSpawnInterval;
+    
+    private bool spawnLoopActive = false;
+    private Coroutine spawnCoroutine;
 
     void Start()
     {
         currentSpawnInterval = initialSpawnInterval;
-        StartCoroutine(SpawnLoop());
     }
 
-    public IEnumerator SpawnLoop()
+    public void StartSpawnLoop()
     {
-        while (true)
+        if (spawnCoroutine == null)
+        {
+            spawnLoopActive = true;
+            spawnCoroutine = StartCoroutine(SpawnLoop());
+        }
+    }
+
+    public void StopSpawnLoop()
+    {
+        spawnLoopActive = false;
+
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
+    }
+
+    private IEnumerator SpawnLoop()
+    {
+        while (spawnLoopActive)
         {
             SpawnRandomNote();
 
-            // Réduire progressivement l'intervalle
             currentSpawnInterval = Mathf.Max(minSpawnInterval, currentSpawnInterval - intervalDecrease);
 
             yield return new WaitForSeconds(currentSpawnInterval);
         }
+
+        spawnCoroutine = null; // Libère la référence une fois terminé
     }
 
     void SpawnRandomNote()

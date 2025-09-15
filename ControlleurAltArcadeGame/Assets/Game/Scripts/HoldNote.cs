@@ -21,8 +21,6 @@ public class HoldNote : Note
         }
     }
     
-    
-    
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
