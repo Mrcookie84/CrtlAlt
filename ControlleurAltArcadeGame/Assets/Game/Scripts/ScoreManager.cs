@@ -9,14 +9,16 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]private GameObject playerGameObject;
     [SerializeField]private TextMeshProUGUI currentPlayerScoreText;
     [SerializeField][Tooltip("Top 3 Names and Scores Text")]private TextMeshProUGUI[] topPlayersAndScoresTextList;
-    [SerializeField]private List<String> topPlayerNamesList = new List<String>(3);
-    [SerializeField]private List<float> topPlayerScoresList = new List<float>(3);
+    [SerializeField]private List<String> topPlayerNamesList = new List<String>();
+    [SerializeField]private List<float> topPlayerScoresList = new List<float>();
+    [SerializeField]private GameObject scores;
 
     private string currentPlayerName = "TON NOM";
     private float currentPlayerScore;
     
     void Start()
     {
+        scores.SetActive(false);
         DisplayScoreBoard();
         topPlayerNamesList.Capacity = 3;
         topPlayerScoresList.Capacity = 3;
@@ -42,6 +44,7 @@ public class ScoreManager : MonoBehaviour
         
         if (topPlayerNamesList.Count != 0 &&  topPlayerScoresList.Count != 0)
         {
+            Debug.Log("Top 3 Names and Scores are not empty");
             for (int i = 0; i < topPlayerNamesList.Count; i++)
             {
                 topPlayersAndScoresTextList[i].text = topPlayerNamesList[i] + " : " + topPlayerScoresList[i].ToString("F0");
@@ -49,6 +52,7 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Top 3 Names and Scores are empty");
             for (int i = 0; i < topPlayersAndScoresTextList.Length; i++)
             {
                 topPlayerNamesList.Add("VIDE");
@@ -65,6 +69,7 @@ public class ScoreManager : MonoBehaviour
 
     public void EndGame()
     {
+        scores.SetActive(true);
         
         for (int i = 0; i < topPlayerScoresList.Count; i++)
         {
