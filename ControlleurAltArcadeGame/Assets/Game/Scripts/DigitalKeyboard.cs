@@ -7,7 +7,7 @@ public class DigitalKeyboardController : MonoBehaviour
     #region Parameters
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private int characterCount = 15;
-    [SerializeField] private GameObject Menucanvas;
+    [SerializeField][Tooltip("Canvas du Keyboard")] private GameObject Keyboardcanvas;
     private int characterLimit;
     private int currentIndex = 0;
     
@@ -100,7 +100,7 @@ public class DigitalKeyboardController : MonoBehaviour
     public void StartGame()
     { 
         scoreManagerscript.AddPlayerName(inputField.text);
-        Menucanvas.SetActive(false);
+        Keyboardcanvas.SetActive(false);
         //Debug.Log(inputField.text);
     }
 }
