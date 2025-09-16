@@ -2,66 +2,66 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField]private GameObject playerGameObject;
-    [SerializeField]private TextMeshProUGUI currentPlayerScoreText;
-    [SerializeField][Tooltip("Top 3 Names and Scores Text")]private TextMeshProUGUI[] topPlayersAndScoresTextList;
-    [SerializeField]private List<String> topPlayerNamesList = new List<String>();
-    [SerializeField]private List<float> topPlayerScoresList = new List<float>();
-    [SerializeField]private GameObject scores;
+    [SerializeField] private GameObject playerGameObject;
+    [SerializeField] private TextMeshProUGUI currentPlayerScoreText;
+    [SerializeField] [Tooltip("Top 3 Names and Scores Text")] private TextMeshProUGUI[] topPlayersAndScoresTextList;
+    [SerializeField] private List<string> topPlayerNamesList = new List<string>();
+    [SerializeField] private List<float> topPlayerScoresList = new List<float>();
+    [SerializeField] private GameObject scores;
 
     private string currentPlayerName = "TON NOM";
     private float currentPlayerScore;
-    
+
+    private const int MaxScores = 3;
+
     void Start()
     {
         scores.SetActive(false);
+
+        LoadScores();       
+        InitializeLeaderboard();
         DisplayScoreBoard();
-        topPlayerNamesList.Capacity = 3;
-        topPlayerScoresList.Capacity = 3;
     }
+
     void Update()
     {
         UpdateScore();
         DisplayScore();
     }
- 
-    public void UpdateScore()
+
+    private void UpdateScore()
     {
         currentPlayerScore = playerGameObject.transform.position.y;
     }
 
-    public void DisplayScore()
+    private void DisplayScore()
     {
-        currentPlayerScoreText.text = currentPlayerName + " : " + currentPlayerScore;
+        currentPlayerScoreText.text = $"{currentPlayerName} : {currentPlayerScore:F0}";
     }
-    private void DisplayScoreBoard()
+
+    private void InitializeLeaderboard()
     {
-        Debug.Log("Displaying Score Board");
-        
-        if (topPlayerNamesList.Count != 0 &&  topPlayerScoresList.Count != 0)
+        if (topPlayerNamesList.Count == 0)
         {
-            Debug.Log("Top 3 Names and Scores are not empty");
-            for (int i = 0; i < topPlayerNamesList.Count; i++)
-            {
-                topPlayersAndScoresTextList[i].text = topPlayerNamesList[i] + " : " + topPlayerScoresList[i].ToString("F0");
-            }
-        }
-        else
-        {
-            Debug.Log("Top 3 Names and Scores are empty");
-            for (int i = 0; i < topPlayersAndScoresTextList.Length; i++)
+            for (int i = 0; i < MaxScores; i++)
             {
                 topPlayerNamesList.Add("VIDE");
                 topPlayerScoresList.Add(0);
-                topPlayersAndScoresTextList[i].text = topPlayerNamesList[i] + " : " + topPlayerScoresList[i].ToString("F0");
-                Debug.Log(topPlayersAndScoresTextList[i].text);
             }
         }
     }
+
+    private void DisplayScoreBoard()
+    {
+        for (int i = 0; i < MaxScores; i++)
+        {
+            topPlayersAndScoresTextList[i].text = $"{topPlayerNamesList[i]} : {topPlayerScoresList[i]:F0}";
+        }
+    }
+
     public void AddPlayerName(string _name)
     {
         currentPlayerName = _name;
@@ -70,12 +70,12 @@ public class ScoreManager : MonoBehaviour
     public void EndGame()
     {
         scores.SetActive(true);
-        
-        for (int i = 0; i < topPlayerScoresList.Count; i++)
+
+        for (int i = 0; i < MaxScores; i++)
         {
             if (currentPlayerScore > topPlayerScoresList[i])
             {
-                for (int j = topPlayerScoresList.Count - 1; j > i; j--)
+                for (int j = MaxScores - 1; j > i; j--)
                 {
                     topPlayerScoresList[j] = topPlayerScoresList[j - 1];
                     topPlayerNamesList[j] = topPlayerNamesList[j - 1];
@@ -83,12 +83,38 @@ public class ScoreManager : MonoBehaviour
 
                 topPlayerScoresList[i] = currentPlayerScore;
                 topPlayerNamesList[i] = currentPlayerName;
-
-                break; 
+                break;
             }
         }
-        DisplayScoreBoard();
 
-        currentPlayerScore = 0;
+        SaveScores();       
+        DisplayScoreBoard();
+    }
+
+    private void SaveScores()
+    {
+        for (int i = 0; i < MaxScores; i++)
+        {
+            PlayerPrefs.SetString($"Name{i}", topPlayerNamesList[i]);
+            PlayerPrefs.SetFloat($"Score{i}", topPlayerScoresList[i]);
+        }
+        PlayerPrefs.Save();
+        Debug.Log("Leaderboard Saved");
+    }
+
+    private void LoadScores()
+    {
+        topPlayerNamesList.Clear();
+        topPlayerScoresList.Clear();
+
+        for (int i = 0; i < MaxScores; i++)
+        {
+            string name = PlayerPrefs.GetString($"Name{i}", "VIDE");
+            float score = PlayerPrefs.GetFloat($"Score{i}", 0);
+
+            topPlayerNamesList.Add(name);
+            topPlayerScoresList.Add(score);
+        }
+        Debug.Log("Leaderboard Loaded");
     }
 }
