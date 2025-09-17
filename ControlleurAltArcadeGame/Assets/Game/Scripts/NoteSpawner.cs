@@ -16,23 +16,25 @@ public class NoteSpawner : MonoBehaviour
     public Transform[] spawnPoints;
 
     [Header("Spawn Settings")]
-    public float initialSpawnInterval = 10f;  // Intervalle de départ
+    public float initialSpawnInterval = 10f;
+    public float currentSpawnInterval; 
+    private float _initialSpawnIntervalStock; 
     public float minSpawnInterval = 0.5f;    // Vitesse max (intervalle minimum)
     public float intervalDecrease = 0.02f;   // Réduction après chaque spawn
     public float holdNoteChance = 0.01f;      // % de chance qu'une hold note spawn (0.5 = 50%)
-
-    private float currentSpawnInterval;
     
     private bool spawnLoopActive = false;
     private Coroutine spawnCoroutine;
 
     void Start()
     {
-        currentSpawnInterval = initialSpawnInterval;
+        _initialSpawnIntervalStock = initialSpawnInterval;
+        currentSpawnInterval = _initialSpawnIntervalStock;
     }
 
     public void StartSpawnLoop()
     {
+        currentSpawnInterval = _initialSpawnIntervalStock;
         if (spawnCoroutine == null)
         {
             spawnLoopActive = true;

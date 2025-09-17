@@ -5,15 +5,15 @@ using TMPro;
 public class DigitalKeyboardController : MonoBehaviour
 {
     #region Parameters
-    [SerializeField] private TMP_InputField inputField;
-    [SerializeField] private int characterCount = 15;
+    [SerializeField] private TMP_Text text;
+    [SerializeField] private int characterCount = 8;
     [SerializeField][Tooltip("Canvas du Keyboard")] private GameObject Keyboardcanvas;
     private int characterLimit;
     private int currentIndex = 0;
     
     public Button[] keys;      
     public int keysPerRow = 10; 
-    public ScoreManager scoreManagerscript;
+    public TableauDeScoreManager tableauDeScoreManagerscript;
     #endregion
 
     void Start()
@@ -24,23 +24,23 @@ public class DigitalKeyboardController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             MoveCursor(1);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.V))
         {
             MoveCursor(-1);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.B))
         {
             MoveCursor(-keysPerRow);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.N))
         {
             MoveCursor(keysPerRow);
         }
-        else if (Input.GetKeyDown(KeyCode.Return))
+        else if (Input.GetKeyDown(KeyCode.X))
         {
             PressKey();
         }
@@ -70,37 +70,52 @@ public class DigitalKeyboardController : MonoBehaviour
     public void PressKey()
     {
         string key; 
-        if (keys[currentIndex].tag == "StartKey")
+        if (keys[currentIndex].CompareTag("StartKey"))
         {
-            StartGame();
+            EnterName();
+            text.text = null;
         }
-        else if (keys[currentIndex].tag == "SpaceKey" && characterCount > 0)
+        else if (keys[currentIndex].CompareTag("SpaceKey") && characterCount > 0)
         {
+            Debug.Log("Espace ajouté");
             key = " ";
-            inputField.text += key;
+            text.text += key;
             characterCount--;
-            //Debug.Log("Input: " + key + ". Limit:" + characterCount);
         }
-        else if (keys[currentIndex].tag == "SuprKey")
+        else if (keys[currentIndex].CompareTag("SuprKey"))
         {
+            Debug.Log("Suppression !");
             key = "";
-            inputField.text = key;
+            text.text = key;
             characterCount = characterLimit;
-            //Debug.Log("Input: " + key + ". Limit:" + characterCount);
         }
         else if (characterCount > 0)
         {
             key = keys[currentIndex].GetComponentInChildren<TMP_Text>().text;
-            inputField.text += key;
+            Debug.Log("Ajout de la lettre : " + key);
+            text.text += key;
             characterCount--;
-            //Debug.Log("Input: " + key + ". Limit:" + characterCount);
+        }
+        else
+        {
+            Debug.Log("Limite atteinte, pas de saisie possible");
         }
     }
 
-    public void StartGame()
-    { 
-        scoreManagerscript.AddPlayerName(inputField.text);
+    public void EnterName()
+    {
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            tableauDeScoreManagerscript.AddScore(text.text, gm.savedScore);
+        }
+
         Keyboardcanvas.SetActive(false);
-        //Debug.Log(inputField.text);
+
+        UIScript ui = FindObjectOfType<UIScript>();
+        if (ui != null)
+        {
+            ui.BackToStartMenu();
+        }
     }
 }
