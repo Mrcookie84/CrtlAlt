@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public GameObject bonusPopUp;
     //public SpriteRenderer bonusPopUpSr;
     public UIScript ui;
+    public AnimationManager animManager;
     
     
     [Header("Note Spawner")]
