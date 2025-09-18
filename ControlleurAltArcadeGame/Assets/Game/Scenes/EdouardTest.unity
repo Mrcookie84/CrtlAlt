@@ -1173,8 +1173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732c2a8d1278a3f4c91e593583a7ee49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  innactivityTimer: 0
-  innactivityTimerMax: 10
+  innactivityTimer: 3
+  innactivityTimerMax: 0
   isPlaying: 1
 --- !u!4 &211838629
 Transform:
@@ -5327,7 +5327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputField: {fileID: 1584026557}
   characterCount: 15
-  Keyboardcanvas: {fileID: 1269140903}
+  Keyboardcanvas: {fileID: 0}
   keys:
   - {fileID: 1357467890}
   - {fileID: 1636014196}
@@ -5496,6 +5496,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1276444584}
   m_CullTransparentMesh: 1
+--- !u!1 &1287205108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1287205110}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1287205110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287205108}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 713.47253, y: 659.9644, z: 0.09202056}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1304120998
 GameObject:
   m_ObjectHideFlags: 0
@@ -7170,7 +7201,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 30
-  m_CharacterLimit: 15
+  m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -8213,7 +8244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchoredPosition: {x: 89, y: -60}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1865465767
@@ -8268,7 +8299,7 @@ MonoBehaviour:
   - 47
   - 0
   - 0
-  scores: {fileID: 1865465765}
+  scores: {fileID: 0}
 --- !u!1 &1889101702
 GameObject:
   m_ObjectHideFlags: 0
@@ -9937,7 +9968,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: START
+  m_text: CONFIRMER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9964,8 +9995,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.95
-  m_fontSizeBase: 56.95
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10383,6 +10414,7 @@ SceneRoots:
   - {fileID: 1269140907}
   - {fileID: 1485811922}
   - {fileID: 186862345}
+  - {fileID: 1287205110}
   - {fileID: 2135720501}
   - {fileID: 594073803}
   - {fileID: 211838629}

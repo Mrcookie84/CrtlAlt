@@ -16,7 +16,7 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if (keepTiming = true)
+        if (keepTiming)
         {
             UpdateTime();
         }

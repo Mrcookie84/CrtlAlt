@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,6 +10,7 @@ public class Note : MonoBehaviour
     [HideInInspector] public bool canBePressed = false;
     [Header("Sprites par Lane")]
     public Sprite[] laneSprites; // 0=Right, 1=Up, 2=Left, 3=Down
+    public GameObject[] laneNoteHitSprites;
 
     public SpriteRenderer sr;
 
@@ -30,11 +32,6 @@ public class Note : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
-
-        if (transform.position.y < -6f)
-        {
-            Miss();
-        }
     }
 
     public void Pressed()
@@ -46,6 +43,7 @@ public class Note : MonoBehaviour
     protected virtual void Hit(int scoreUp)
     {
         FindObjectOfType<GameManager>().NoteHit(scoreUp);
+        //laneNoteHitSprites[lane].SetActive(true);
         Destroy(gameObject);
     }
 
@@ -59,11 +57,20 @@ public class Note : MonoBehaviour
     {
         if (other.CompareTag("HitZone"))
             canBePressed = true;
+
+        if (other.CompareTag("DestroyBox"))
+        {
+            Miss();
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("HitZone"))
             canBePressed = false;
+
+        
+        
     }
+
 }
