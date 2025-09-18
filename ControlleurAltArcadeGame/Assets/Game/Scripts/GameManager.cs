@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
     public GameObject hpSprite2;
     public GameObject hpSprite3;
     public GameObject bonusPopUp;
+    public GameObject bonus2XScorePopUp;
+    public GameObject bonusInvincibilityPopUp;
+    public GameObject oppacityMask;
     public UIScript ui;
     public AnimationManager animManager;
     
@@ -38,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        oppacityMask.SetActive(false);
         _bonusActive = false;
         bonusBar.maxValue = scoreToActivateBonus;
         bonusBar.value = score;
@@ -74,6 +79,7 @@ public class GameManager : MonoBehaviour
                 {
                     _bonusActive = true;
                     _invincibilityBonusActive = true;
+                    //inv
                     Debug.Log("Invincibility");
                     StartCoroutine(InvincibilityBonusCorout());
                 }
@@ -88,6 +94,19 @@ public class GameManager : MonoBehaviour
                 bonusBar.value -= scoreToActivateBonus;
                 bonusPopUp.SetActive(false);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.C) && Input.GetKeyDown(KeyCode.V))
+        {
+            if (!oppacityMask.activeSelf)
+            {
+                oppacityMask.SetActive(true);
+            }
+            else
+            {
+                oppacityMask.SetActive(false);
+            }
+            
         }
 
         if (!_debuffInCooldown && Input.GetKeyDown(KeyCode.UpArrow))
