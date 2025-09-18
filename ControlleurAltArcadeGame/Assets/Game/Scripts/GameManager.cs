@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -21,16 +20,15 @@ public class GameManager : MonoBehaviour
     public GameObject hpSprite2;
     public GameObject hpSprite3;
     public GameObject bonusPopUp;
-    //public SpriteRenderer bonusPopUpSr;
     public UIScript ui;
     public AnimationManager animManager;
-    
     
     [Header("Note Spawner")]
     public NoteSpawner noteSpawner;
     private int hp = 3;
 
-    [Header("Bonus Bar")] public Slider bonusBar;
+    [Header("Bonus Bar")] 
+    public Slider bonusBar;
     public float doubleScoreBonusDurationTime = 10;
     public float invincibilityBonusDurationTime = 5;
     public int scoreToActivateBonus = 100;
@@ -42,11 +40,13 @@ public class GameManager : MonoBehaviour
     {
         _bonusActive = false;
         bonusBar.maxValue = scoreToActivateBonus;
-        bonusBar.value = 0;
         bonusBar.value = score;
         _debuffInCooldown = false;
         bonusPopUp.SetActive(false);
         UpdateUI();
+
+        // Animation de départ
+        animManager.SetAnimation(AnimationManager.AnimEnum.Climbing);
     }
 
     public void StartTheGame()
@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour
         hp = 3;
         UpdateUI();
         noteSpawner.StartSpawnLoop();
-        
+
+        animManager.SetAnimation(AnimationManager.AnimEnum.Climbing);
     }
 
     private void Update()
@@ -86,31 +87,35 @@ public class GameManager : MonoBehaviour
                 
                 bonusBar.value -= scoreToActivateBonus;
                 bonusPopUp.SetActive(false);
-                
             }
         }
 
         if (!_debuffInCooldown && Input.GetKeyDown(KeyCode.UpArrow))
         {
-            
             StartCoroutine(DebuffCorout());
         }
-
     }
 
     private IEnumerator DebuffCorout()
     {
-        if ((score -= debuffScoreLose) <= 0)
+        if (!_invincibilityBonusActive)
         {
-            score = 0;
-            UpdateUI();
-        }
-        else
-        {
+            // Joue l'anim de chute
+            animManager.SetAnimation(AnimationManager.AnimEnum.Falling);
+
+            // Applique la perte de score
             score -= debuffScoreLose;
+            if (score < 0) score = 0;
             UpdateUI();
+
+            // petit délai pour laisser voir l'anim de chute
+            yield return new WaitForSeconds(0.5f);
+
+            // si le joueur est encore en vie, on repasse en climb
+            if (hp > 0)
+                animManager.SetAnimation(AnimationManager.AnimEnum.Climbing);
         }
-        
+
         _debuffInCooldown = true;
         yield return new WaitForSeconds(debuffCooldownTime);
         _debuffInCooldown = false;
@@ -126,69 +131,53 @@ public class GameManager : MonoBehaviour
     private IEnumerator InvincibilityBonusCorout()
     {
         yield return new WaitForSeconds(invincibilityBonusDurationTime);
-        _invincibilityBonusActive = true;
+        _invincibilityBonusActive = false;
         _bonusActive = false;
     }
 
     public void NoteHit(int scoreUp)
     {
         if (_doubleScoreBonusActive)
-        {
             score += scoreUp * 2;
-
-        }
         else
         {
             if (!_bonusActive && !Mathf.Approximately(bonusBar.value, bonusBar.maxValue))
-            {
                 bonusBar.value += scoreUp;
-            }
-            
+
             score += scoreUp;
         }
 
         UpdateUI();
     }
 
-    
-
     public void NoteMiss()
     {
-        if (_invincibilityBonusActive)
-        {
-            // do nothing
-        }
-        else
-        {
+        if (!_invincibilityBonusActive)
             hp -= 1;
-        }
         
-        
-        if (hp == 0)
+        if (hp <= 0)
         {
-            Death();
+            hp = 0;
+            animManager.SetAnimation(AnimationManager.AnimEnum.Die);
         }
-        
+
         UpdateUI();
     }
 
-    private void Death()
+    public void Death()
     {
         hpSprite3.SetActive(false);
         noteSpawner.StopSpawnLoop();
         savedScore = score;
         
         if (ui != null)
-        {
             ui.ShowEndScreen();
-        }
-
     }
 
     void UpdateUI()
     {
-        scoreText.text = "Height : "+ score;
-        
+        scoreText.text = "Height : " + score;
+
         if (hp == 3)
         {
             hpSprite1.SetActive(true);
@@ -204,5 +193,4 @@ public class GameManager : MonoBehaviour
             hpSprite2.SetActive(false);
         }
     }
-
 }
